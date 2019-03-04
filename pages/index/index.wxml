@@ -1,0 +1,66 @@
+<!--scroll-y	允许纵向滚动--->
+<!--bindscrolltoupper	EventHandle		滚动到顶部/左边，会触发 scrolltoupper 事件
+bindscrolltolower	EventHandle		滚动到底部/右边，会触发 scrolltolower 事件
+scroll-into-view 值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素
+设置竖向滚动条位置（单位px，2.4.0起支持rpx）
+--->
+<scroll-view scroll-y='true' class='container' bindscrolltoupper='upper' upper-threshold='5' bindscrolltolower='lower' scroll-into-view='{{toView}}' scroll-top='{{scrollTop}}'>
+  <!---搜索 start-->
+  <view class='search flex-wrp'>
+    <view class='search-left flex-item'>
+      <image src='../../images/search.png'></image>
+      <!--placeholder-class 指定 placeholder 的样式类-->
+      <input placeholder='搜索话题, 问题或人' placeholder-class='search-placeholder'></input>
+    </view>
+
+    <view class='search-right flex-item' bindtap='upper'>
+      <image src='../../images/lighting.png'></image>
+    </view>
+  </view>
+  <!---搜索 end-->
+  <!--<block/> 并不是一个组件，它仅仅是一个包装元素，不会在页面中做任何渲染，只接受控制属性。
+  wx:for-item=‘变量名（随便起的）’   它是指定循环数据当前的变量名，可以通过  {{变量名.属性}} 展示数组的元素。
+wx:for-index=‘变量名（随便起）’，它是指向当前元素的下标名，可以在其他事件中定义自定义事件（data-xxx='{{变量名}}'，，该自定义属性可以在参数e下面打印出来）获取该下标。
+  --->
+  <block wx:for='{{feed}}' wx:for-index='idx' wx:for-item='item' data-idx='{{idx}}'>
+    <view class='feed-item'>
+      <view class='feed-source'>
+        <a>
+          <view class='avatar'>
+            <image src='{{item.feed_source_img}}'></image>
+          </view>
+          <text>{{item.feed_source_name}}{{item.feed_source_txt}}</text>
+        </a>
+        <!--mode='aspectFit'图片裁剪、缩放的模式--->
+        <image class='item-more' mode='aspectFit' src='../../images/more.png'></image>
+      </view>
+      <!--问题 start--->
+      <view class='feed-content'>
+        <view class='question' qid='{{question_id}}' bindtap='bindQueTap'>
+          <a class='question-link'>
+            <text>{{item.question}}</text>
+          </a>
+        </view>
+
+        <!--问题 end--->
+
+        <view class="answer-body">
+          <view bindtap="bindItemTap">
+            <text class="answer-txt" aid="{{answer_id}}">{{item.answer_ctnt}}</text>
+          </view>
+          <view class="answer-actions" bindtap="bindItemTap">
+            <view class="like dot">
+              <a>{{item.good_num}} 赞同 </a>
+            </view>
+            <view class="comments dot">
+              <a>{{item.comment_num}} 评论 </a>
+            </view>
+            <view class="follow-it">
+              <a>关注问题</a>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</scroll-view>
